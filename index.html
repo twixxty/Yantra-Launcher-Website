@@ -236,13 +236,10 @@ margin-top: 3px;
                 };
 
                 const typeSequence = async () => {
-                    // Type ASCII art
                     await typeText(asciiArt);
 
-                    // Wait a bit
                     await new Promise(resolve => setTimeout(resolve, 1500));
 
-                    // Type additional words
                     for (const word of words) {
                         await typeText('\n' + word);
                         await new Promise(resolve => setTimeout(resolve, 300));
@@ -251,7 +248,6 @@ margin-top: 3px;
 
                 typeSequence();
 
-                // Add touch and click events to overlay
                 const overlay = overlayRef.current;
                 const focusInput = () => {
                     if (inputRef.current) {
@@ -295,7 +291,6 @@ margin-top: 3px;
             const handleInputChange = (e) => {
                 const currentInput = e.target.value.toLowerCase();
                 
-                // Check if input matches any of the words
                 const newActiveWords = { ...activeWords };
                 words.forEach(word => {
                     newActiveWords[word] = currentInput.startsWith(word);
@@ -321,7 +316,6 @@ margin-top: 3px;
 
             const words_elements = terminalText.split('\n').map((line, index) => {
                 if (index > 0) {
-                    // For words after the ASCII art
                     const word = line.trim();
                     const is_bottom_word = word === 'twixxt';
                     return (
