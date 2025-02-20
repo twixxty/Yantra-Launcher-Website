@@ -135,6 +135,7 @@ margin-top: 5px;
 margin-top: 3px;
             background-color: white;
             animation: blink 1s infinite;
+            transition: opacity 0s none;
         }
         .yantra-title {
             font-size: 3rem;
@@ -172,6 +173,14 @@ margin-top: 3px;
         }
         .iframe-container.active {
             top: 0;
+        }
+        #cursortype {
+            animation: blinkcursor 1s infinite;
+
+        }
+        @keyframes blinkcursor {
+            0%, 100% { text-decoration: none; }
+            50% { text-decoration: underline 2px white;, text-decoration-thickness: 2px; }
         }
     </style>
 </head>
@@ -345,9 +354,10 @@ margin-top: 3px;
                                 ? typedText.split('').map((char, index) => (
                                     <span key={index} className={`letter visible`}>{char}</span>
                                 )) 
-                                : <span className="placeholder">type here</span>
+                                
+                                : <span className="placeholder"><u id="cursortype">t</u>ype here</span>
                             }
-                            {typedText.length > -1 && <span className="cursor"></span>}
+                            {typedText.length > 0 && <span className="cursor"></span>}
                         </div></div>
                     
                     
