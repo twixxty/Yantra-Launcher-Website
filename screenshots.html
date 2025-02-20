@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshots</title>
+    <style>
+         @font-face {
+            font-family: "maple";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Regular.ttf) format("woff");
+        }
+        @font-face {
+            font-family: "maplebold";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Bold.ttf) format("woff");
+        }      @font-face {
+            font-family: "mapleitalic";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Italic.ttf) format("woff");
+        }
+        a {
+            text-decoration: underline dotted;
+            text-transform: lowercase;
+            transition: scale 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+scale: 1;
+        }
+        a:hover {
+            scale: 1.1;
+            text-size-adjust: 100px;
+            margin: 4px;
+            background-color: white;
+            font-weight: bolder;
+            color: black;
+            animation: typewriter 0.5s;
+text-transform: uppercase;
+padding: 5px;
+                }
+        body, a {
+            font-family: maple, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            font-family: maplebold;
+            margin-bottom: 20px;
+            font-weight: bolder;
+            font-size: 8vw;
+        }
+        h2 {
+            font-size: 5vw;
+        }
+        .gallery {
+            max-width: 1000px;
+            margin: auto;
+        }
+        .screenshot-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        .screenshot-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .screenshot-item img {
+            width: 40%;
+            border-radius: 8px;
+            transition: scale 0.3s ease-in-out, padding 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+        } 
+        .screenshot-item img:hover {
+            width: 40%;
+            scale: 1.1;
+            padding: 20px;
+        }
+        .screenshot-item .text {
+            font-family: mapleitalic;
+            width: 50%;
+            text-align: left;
+        }
+        @keyframes typewriter {
+            0% {
+              filter: blur(0px);
+              text-transform: lowercase;
+
+            }
+            25% {
+                filter: blur(5px);
+                text-shadow: 0 0 5px white, 0 0 10px white;
+                text-transform: uppercase;
+
+            }
+            100% {
+               filter: blur(0px);
+               text-transform: uppercase;
+
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Screenshots</h1>
+    <div class="gallery">
+        <div class="screenshot-item">
+            <img src="pictures/Screenshot_2025-01-14-17-18-39-283_com.coderGtm.yantra.pro.jpg" alt="Screenshot 1">
+            <div class="text">
+                <h2>"😋"</h2>
+                <p>a setup by <b>hackTroz</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/Screenshot_2025-02-16-13-05-08-91_30e6aa14e1d3b0420ccc4e7f2a2bf299.jpg" alt="Screenshot 2">
+            <div class="text">
+                <h2>"cinderella"</h2>
+                <p>a setup by <b>Aris</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/Screenshot_20250212-214136.png" alt="Screenshot 3">
+            <div class="text">
+                <h2>"simplicity"</h2>
+                <p>a setup by <b>hammad</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/IlDd0Mfv.jpg" alt="Screenshot 4">
+            <div class="text">
+                <h2>"peaceful night"</h2>
+                <p>a setup by <b>axolotl</b></p>
+            </div>
+        </div>
+    </div>
+</body>
+<footer><a href="javascript:window.close();"">go back</a></footer>
+<script></script>
+</html>

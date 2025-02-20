@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html "en">
+<head>   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yantra Launcher</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <style>
+         @font-face {
+            font-family: "maple";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Regular.ttf) format("woff");
+        }
+         body, html {
+            text-rendering: pixellated;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: black;
+            color: white;
+            font-family: 'maple', monospace;
+            overscroll-behavior: contain;
+        }
+        #root {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 100%;
+        }
+        .terminal-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .terminal {
+            white-space: pre-wrap;
+            text-align: center;
+            font-size: 1rem;
+            line-height: 1;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .keyboard-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        .hidden-input {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            opacity: 0;
+        }
+        .typed-word {
+            width: auto;
+            display: inline-block;
+            white-space: nowrap;
+margin-top: 0px;
+transition: margin-top 0.3s ease;
+transition: margin-bottom 0.3s ease;
+            transition: color 0.3s ease;
+transition: font-weight 0.9s ease;
+            cursor: pointer;
+transition: scale 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+        .typed-word.active {
+            text-size-adjust: 100px;
+            margin: 4px;
+            background-color: white;
+            font-weight: bolder;
+            color: black;
+scale: 1.2;
+padding: 3px;
+animation: typewriter 0.5s;
+text-transform: uppercase;
+
+        }
+          .typed-word.active span {
+            display: inline-block;
+            overflow: hidden;
+            animation: typewriter 0.5s;
+            white-space: nowrap;
+            text-transform: lowercase;
+
+        }
+        @keyframes typewriter {
+            0% {
+              filter: blur(0px);
+              text-transform: lowercase;
+
+            }
+            25% {
+                filter: blur(5px);
+                text-shadow: 0 0 5px white, 0 0 10px white;
+                text-transform: uppercase;
+
+            }
+            100% {
+               filter: blur(0px);
+               text-transform: uppercase;
+
+            }
+        }
+        .division {
+margin-top: 5px;
+            width: 80%;
+            height: 2px;
+            background-color: #A0A0A0;
+            
+        }
+        .input-preview {
+            cursor: text;
+            color: #A0A0A0;
+           scale: 0.8;
+        }
+        .cursor {
+            display: inline-block;
+            width: 7px;
+            height: 12px;
+margin-top: 3px;
+            background-color: white;
+            animation: blink 1s infinite;
+        }
+        .yantra-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        @media (max-width: 600px) {
+            .terminal {
+                font-size: 0.7rem;
+            }
+            .yantra-title {
+                font-size: 2rem;
+            }
+        }
+        .letter {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .letter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .iframe-container {
+            position: fixed;
+            top: 100vh;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            transition: top 0.5s ease-in-out;
+        }
+        .iframe-container.active {
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <div class="iframe-container" id="screenshotFrame">
+        <iframe src="/screenshots.html" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const TerminalApp = () => {
+            const [terminalText, setTerminalText] = useState('');
+            const [typedText, setTypedText] = useState('');
+            const [visibleLetters, setVisibleLetters] = useState([]);
+            const [command, setCommand] = useState('');
+            const [activeWords, setActiveWords] = useState({
+                install: false,
+                github: false,
+                developer: false,
+                twixxt: false,
+                screenshots: false
+            });
+            const inputRef = useRef(null);
+            const overlayRef = useRef(null);
+
+            const commandUrls = {
+                install: 'https://play.google.com/store/apps/details?id=com.coderGtm.yantra',
+                github: 'https://github.com/coderGtm/yantra-app-launcher',
+                developer: 'https://codergtm.github.io/',
+                community: 'https://discord.gg/yfUPvrkDmr',
+                screenshots: '/screenshots.html',
+
+            };
+
+            const asciiArt = `####################
+####################
+####################
+####################
+####............####
+####################
+####........########
+####################
+####################
+####################
+####################`;
+
+            const words = ['install', 'github', 'developer', 'community','screenshots'];
+
+            useEffect(() => {
+                
+                let timeoutId;
+                
+                const typeText = async (text, speed = 10) => {
+                    for (let i = 0; i < text.length; i++) {
+                        await new Promise(resolve => {
+                            timeoutId = setTimeout(() => {
+                                setTerminalText(prev => prev + text[i]);
+                                resolve();
+                            }, speed);
+                        });
+                    }
+                };
+
+                const typeSequence = async () => {
+                    // Type ASCII art
+                    await typeText(asciiArt);
+
+                    // Wait a bit
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+
+                    // Type additional words
+                    for (const word of words) {
+                        await typeText('\n' + word);
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+                };
+
+                typeSequence();
+
+                // Add touch and click events to overlay
+                const overlay = overlayRef.current;
+                const focusInput = () => {
+                    if (inputRef.current) {
+                        inputRef.current.focus();
+                    }
+                };
+
+                if (overlay) {
+                    overlay.addEventListener('touchstart', focusInput);
+                    overlay.addEventListener('click', focusInput);
+                }
+
+                return () => {
+                    if (timeoutId) clearTimeout(timeoutId);
+                    if (overlay) {
+                        overlay.removeEventListener('touchstart', focusInput);
+                        overlay.removeEventListener('click', focusInput);
+                    }
+                };
+            }, []);
+            useEffect(() => {
+                let timeouts = [];
+                setVisibleLetters([]);
+                typedText.split('').forEach((char, index) => {
+                    const timeout = setTimeout(() => {
+                        setVisibleLetters(prev => [...prev, char]);
+                    }, index * 50);
+                    timeouts.push(timeout);
+                });
+                const handleKeyDown = (e) => {
+                if (e.key === 'Enter') {
+                    if (command.toLowerCase() === 'screenshots') {
+                        document.getElementById('screenshotFrame').classList.add('active');
+                    }
+                    setCommand('');
+                }
+            };
+
+                return () => timeouts.forEach(clearTimeout);
+            }, [typedText]);
+            const handleInputChange = (e) => {
+                const currentInput = e.target.value.toLowerCase();
+                
+                // Check if input matches any of the words
+                const newActiveWords = { ...activeWords };
+                words.forEach(word => {
+                    newActiveWords[word] = currentInput.startsWith(word);
+                });
+
+                setActiveWords(newActiveWords);
+                setTypedText(currentInput);
+            };
+
+            const handleKeyDown = (e) => {
+                if (e.key === 'Enter') {
+                    const currentInput = typedText.toLowerCase();
+                    const matchedWord = words.find(word => word === currentInput);
+                    
+                    if (matchedWord) {
+                        const url = commandUrls[matchedWord];
+                        if (url) {
+                            window.open(url, '_blank');
+                        }
+                    }
+                }
+            };
+
+            const words_elements = terminalText.split('\n').map((line, index) => {
+                if (index > 0) {
+                    // For words after the ASCII art
+                    const word = line.trim();
+                    const is_bottom_word = word === 'twixxt';
+                    return (
+                        <div 
+                            key={line} 
+                            className={`typed-word 
+                                ${activeWords[word] ? 'active' : ''} 
+                                ${is_bottom_word ? 'bottom-word' : ''}`}
+                        >
+                            {line}
+                        </div>
+                    );
+                }
+                return line;
+            });
+
+            return (
+                <div className="terminal-container">
+                    <div className="terminal">
+{words_elements}
+
+                    <div className="division"></div>
+                    
+                    <div className="input-preview">
+                        {typedText.length > 0 
+                                ? typedText.split('').map((char, index) => (
+                                    <span key={index} className={`letter visible`}>{char}</span>
+                                )) 
+                                : <span className="placeholder">type here</span>
+                            }
+                            {typedText.length > 0 && <span className="cursor"></span>}
+                        </div></div>
+                    
+                    
+                    
+                    <div 
+                        ref={overlayRef}
+                        className="keyboard-overlay"
+                    />
+                    <input 
+                        ref={inputRef}
+                        type="text" 
+                        className="hidden-input" 
+                        value={typedText}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
+                    />
+                </div>
+            );
+        };
+
+        ReactDOM.render(<TerminalApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
