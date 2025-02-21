@@ -25,6 +25,7 @@
             overscroll-behavior: contain;
         }
         #root {
+           
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -33,6 +34,7 @@
             width: 100%;
         }
         .terminal-container {
+            z-index: 2;
             width: 100%;
             height: 100%;
             display: flex;
@@ -42,6 +44,7 @@
             position: relative;
         }
         .terminal {
+            
             white-space: pre-wrap;
             text-align: center;
             font-size: 1rem;
@@ -97,6 +100,10 @@ text-transform: uppercase;
             white-space: nowrap;
             text-transform: lowercase;
 
+        }
+        span{
+            mix-blend-mode: difference;
+            filter: invert(1);
         }
         @keyframes typewriter {
             0% {
@@ -155,6 +162,7 @@ margin-top: 3px;
             }
         }
         .letter {
+           
             opacity: 0;
             transform: translateY(-10px);
             transition: opacity 0.3s ease, transform 0.3s ease;
@@ -182,6 +190,23 @@ margin-top: 3px;
             0%, 100% { text-decoration: none; }
             50% { text-decoration: underline 2px white;, text-decoration-thickness: 2px; }
         }
+        #video {
+            position: fixed;
+            top: 0;
+            z-index: 0;
+            filter: blur(20px);
+            width: 100%;
+            height: 100%;
+        }
+        @media (min-width: 768px) {
+            #video {
+                transform: rotate(90deg);
+                transform-origin: center;
+                height: 100vw;
+                width: 100vh;
+                overflow-x: hidden;
+            }
+        }
     </style>
 </head>
 <body>
@@ -189,6 +214,7 @@ margin-top: 3px;
     <div class="iframe-container" id="screenshotFrame">
         <iframe src="/screenshots.html" width="100%" height="100%" frameborder="0"></iframe>
     </div>
+    <video src="videos/e5394aefe611b6333c43aa259ea90ca3.mp4" autoplay muted loop id="video"></video>
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
@@ -200,7 +226,7 @@ margin-top: 3px;
             const [activeWords, setActiveWords] = useState({
                 install: false,
                 github: false,
-                developer: false,
+                testimonials: false,
                 twixxt: false,
                 screenshots: false
             });
@@ -210,7 +236,7 @@ margin-top: 3px;
             const commandUrls = {
                 install: 'https://play.google.com/store/apps/details?id=com.coderGtm.yantra',
                 github: 'https://github.com/coderGtm/yantra-app-launcher',
-                developer: 'https://codergtm.github.io/',
+                testimonials: '/testimonials.html',
                 community: 'https://discord.gg/yfUPvrkDmr',
                 screenshots: '/screenshots.html',
 
@@ -228,7 +254,7 @@ margin-top: 3px;
 ####################
 ####################`;
 
-            const words = ['install', 'github', 'developer', 'community','screenshots'];
+            const words = ['install', 'github', 'testimonials', 'community','screenshots'];
 
             useEffect(() => {
                 

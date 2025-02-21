@@ -7,6 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Screenshots</title>
     <style>
+        ::-webkit-scrollbar {
+    width: 1px;
+    height: 1px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 10px; 
+}
+
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+ {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0) transparent;
+}
+@font-face {
+            font-family: "vintage";
+            font-style: normal;
+            src: url(fonts/ahronbd.ttf) format("woff");
+        }
          @font-face {
             font-family: "maple";
             font-style: normal;
@@ -47,10 +70,10 @@ padding: 5px;
             text-align: center;
         }
         h1 {
-            font-family: maplebold;
+            font-family: vintage;
             margin-bottom: 20px;
             font-weight: bolder;
-            font-size: 4vw;
+            font-size: 6vw;
         }
         h2 {
             font-size: 5vw;
@@ -69,11 +92,13 @@ padding: 5px;
             flex-direction: row-reverse;
         }
         .screenshot-item img {
+            
             width: 40%;
             border-radius: 8px;
             transition: scale 0.3s ease-in-out, padding 0.3s ease-in-out, border-radius 0.3s ease-in-out;
         } 
         .screenshot-item img:hover {
+            
             width: 40%;
             scale: 1.1;
             padding: 20px;
@@ -132,6 +157,20 @@ padding: 5px;
             <div class="text">
                 <h2>peaceful night</h2>
                 <p>a setup by <b>axolotl</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/vacuum.jpg" alt="Screenshot 3">
+            <div class="text">
+                <h2>Vacuum</h2>
+                <p>a setup by <b>Cod3Bre4ker</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/simple.jpg" alt="Screenshot 4">
+            <div class="text">
+                <h2>simple as heck</h2>
+                <p>a setup by <b>farivau</b></p>
             </div>
         </div>
     </div>

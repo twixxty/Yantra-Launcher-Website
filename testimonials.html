@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials</title>
+    <style>
+        @font-face {
+            font-family: "vintage";
+            font-style: normal;
+            src: url(fonts/ahronbd.ttf) format("woff");
+        }
+         @font-face {
+            font-family: "maple";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Regular.ttf) format("woff");
+        }
+        @font-face {
+            font-family: "maplebold";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-ExtraBold.ttf) format("woff");
+        }      @font-face {
+            font-family: "mapleitalic";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Italic.ttf) format("woff");
+        }
+        ::-webkit-scrollbar {
+            width: 1px;
+            height: 1px; 
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0);
+            border-radius: 10px; 
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+
+        body {
+            font-family: maple, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            font-family: vintage;
+            margin-bottom: 20px;
+            font-weight: bolder;
+            font-size: 6vw;
+        }
+        h2 {
+            font-size: 5vw;
+        }
+        .testimonial {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid white;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            transition: scale 0.3s ease-in-out, padding 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+        }
+        .testimonial:hover {
+            border-radius: 20px;
+            scale: 1.05;
+            padding: 10px;
+        }
+        .testimonial p {
+            font-family: mapleitalic;
+            font-size: 1.2em;
+        }
+        .testimonial .author {
+            font-family: maplebold;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Testimonials</h1>
+    <div class="testimonial">
+<p>"Yantra is very lightweight, it is  custimizable and supports scripting with Lua but those things requires the pro version, which i'd say it very low cost.
+    The community is overall nice and caring, while the developer is open to every help and feature request"</p>        <div class="author">- Axolotl</div>
+    </div>
+    <div class="testimonial">
+        <p>"Yantra Launcher is the best CLI homescreen option available by far at the moment. I've been using it for about a year and I can't imagine going back. It encourages me to spend my screentime more deliberately while offering a ton of utility that can't be found anywhere else. I love this app!"</p>
+        <div class="author">- Cod3Bre4ker
+        </div>
+    </div>
+    <div class="testimonial">
+        <p>"yantra is a very customizable launcher and because its text based it means few distruction + faster = productivity"</p>
+        <div class="author">- opipoy</div>
+       
+    </div>
+    <div class="testimonial">
+        <p>"Yantra Launcher is not just another productivity launcher, it can do lots and lots of stuff, without leaving the homescreen :O"</p>
+        <div class="author">- hammad</div>    </div>
+
+        <div class="testimonial">
+            <p>"Yantra launcher is easy to use, functional, and well maintained. The lead dev is kind and excited about the project, and very helpful with questions and concerns. The app itself is easily moddable and very responsive."</p>
+            <div class="author">- dropoflife</div>    </div>    
+</body>
+</html>
