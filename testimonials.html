@@ -38,7 +38,7 @@
             background: transparent; 
         }
 
-        body {
+        body, a {
             font-family: maple, sans-serif;
             margin: 0;
             padding: 20px;
@@ -78,6 +78,41 @@
             font-size: 1.5em;
             margin-top: 10px;
         }
+        a {
+            text-decoration: underline dotted;
+            text-transform: lowercase;
+            transition: scale 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+scale: 1;
+        }
+        a:hover {
+            scale: 1.1;
+            text-size-adjust: 100px;
+            margin: 4px;
+            background-color: white;
+            font-weight: bolder;
+            color: black;
+            animation: typewriter 0.5s;
+text-transform: uppercase;
+padding: 5px;
+                }
+                @keyframes typewriter {
+            0% {
+              filter: blur(0px);
+              text-transform: lowercase;
+
+            }
+            25% {
+                filter: blur(5px);
+                text-shadow: 0 0 5px white, 0 0 10px white;
+                text-transform: uppercase;
+
+            }
+            100% {
+               filter: blur(0px);
+               text-transform: uppercase;
+
+            }
+        }
     </style>
 </head>
 <body>
@@ -103,5 +138,7 @@
         <div class="testimonial">
             <p>"Yantra launcher is easy to use, functional, and well maintained. The lead dev is kind and excited about the project, and very helpful with questions and concerns. The app itself is easily moddable and very responsive."</p>
             <div class="author">- dropoflife</div>    </div>    
-</body>
+            <footer><a href="javascript:window.close();"">go back</a></footer>
+
+        </body>
 </html>
