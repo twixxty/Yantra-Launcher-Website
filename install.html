@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testimonials</title>
-    <style>
-        footer{
+<html>
+<style>
+footer{
             margin-top: 10px;
         }
         @font-face {
@@ -40,7 +35,10 @@
         ::-webkit-scrollbar-track {
             background: transparent; 
         }
-
+a {
+    padding: 0px;
+    background-color: #00000000;
+}
         body, a {
             font-family: maple, sans-serif;
             margin: 0;
@@ -50,6 +48,7 @@
             text-align: center;
         }
         h1 {
+            margin-top: 20px;
             font-family: vintage;
             margin-bottom: 20px;
             font-weight: bolder;
@@ -84,9 +83,9 @@ color: black;
             margin-top: 10px;
         }
         a {
-            padding: 0;
+            padding: 1px;
             text-decoration: underline dotted;
-            text-transform: lowercase;
+            text-transform: none;
             transition: scale 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 scale: 1;
         }
@@ -104,7 +103,7 @@ padding: 5px;
                 @keyframes typewriter {
             0% {
               filter: blur(0px);
-              text-transform: lowercase;
+              text-transform: none;
 
             }
             25% {
@@ -154,50 +153,20 @@ margin-bottom: -55px;
     transition: opacity 2s ease-in-out;
     opacity: 0;
 }
-    </style>
-</head>
-<body>
-    <h1>Testimonials</h1>
-    <span>Don't take our word for it!</span><br><br>
-    <span id="main-stuff">Yantra Launcher is <a href="https://github.com/coderGtm/yantra-app-launcher"><b>fully </b> open source.<a></a></span><br><br>
-    <a href="javascript:void(0);" onclick="darkenAndClose()" id="goback">go back</a>
-<div class="testimonial">
-    <p>"Yantra is very<span id="main-stuff"> lightweight</span>, it is<span id="main-stuff"> customizable</span> and supports scripting with Lua but those things require the pro version, which I'd say is very low cost.  
-    The community is overall nice and caring, while the developer is open to every help and feature request."</p>        
-    <div class="author">- Axolotl</div>
+#containerlol {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+</style>
+<body><div id="containerlol">
+<h1>Install</h1>
+<p>Choose one of the options below to install Yantra Launcher</p>
+<a href="https://play.google.com/store/apps/details?id=com.coderGtm.yantra">Yantra Minimal CLI Launcher</a><br><br>
+<a href="https://play.google.com/store/apps/details?id=com.coderGtm.yantra.pro">Yantra Minimal CLI Launcher Pro</a><br><br>
+<a href="https://github.com/coderGtm/yantra-app-launcher?tab=readme-ov-file#building">Build it for yourself!</a>
 </div>
-
-<div class="testimonial">
-    <p>"Yantra Launcher is the<span id="main-stuff"> best CLI homescreen option</span> available by far at the moment. I've been using it for about a year and I can't imagine going back.  
-    It encourages me to spend my screentime more deliberately while offering a<span id="main-stuff"> ton of utility</span> that can't be found anywhere else. I love this app!"</p>
-    <div class="author">- Cod3Bre4ker</div>
-</div>
-
-<div class="testimonial">
-    <p>"Yantra is a very customizable launcher and because it's<span id="main-stuff"> text-based</span>, it means<span id="main-stuff"> fewer distractions</span> +<span id="main-stuff"> faster</span> =<span id="main-stuff"> productivity</span>."</p>
-    <div class="author">- opipoy</div>
-</div>
-
-<div class="testimonial">
-    <p>"Yantra Launcher is not just another productivity launcher, it can do<span id="main-stuff"> lots and lots of stuff</span> without leaving the homescreen :O"</p>
-    <div class="author">- hammad</div>    
-</div>
-
-<div class="testimonial">
-    <p>"Yantra Launcher is<span id="main-stuff"> easy to use</span>,<span id="main-stuff"> functional</span>, and<span id="main-stuff"> well-maintained</span>. The lead dev is kind and excited about the project and very helpful with questions and concerns.  
-    The app itself is<span id="main-stuff"> easily moddable</span> and<span id="main-stuff"> very responsive</span>."</p>
-    <div class="author">- dropoflife</div>    
-</div>    
-<footer>
-
-</footer>
-        </body>
-        <script>
-              function darkenAndClose() {
-            document.body.classList.add('dark-mode');
-            setTimeout(() => {
-                window.close();
-            }, 6000);
-        }
-        </script>
+</body>
 </html>
