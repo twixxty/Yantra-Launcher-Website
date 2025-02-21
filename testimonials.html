@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testimonials</title>
     <style>
-         footer{
+        footer{
             margin-top: 10px;
         }
         @font-face {
@@ -65,9 +65,11 @@
             border: 1px solid white;
             border-radius: 8px;
             background: rgba(0, 0, 0, 0.1);
-            transition: scale 0.3s ease-in-out, padding 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+            transition: scale 0.3s ease-in-out, padding 0.3s ease-in-out, border-radius 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
         .testimonial:hover {
+background-color: white;
+color: black;
             border-radius: 20px;
             scale: 1.05;
             padding: 10px;
@@ -116,32 +118,81 @@ padding: 5px;
 
             }
         }
+        .dark-mode {
+            transition: color 3s ease-in-out;
+            color: #000000; /* Darkens all text */
+        }
+
+        .dark-mode #main-stuff {
+            transition: color 4s ease-in-out;
+            color: #ffffff; /* Keep main-stuff bright */
+            font-size: 1.2em;
+        }
+        .dark-mode p {
+            transition:color 3s ease-in-out;
+            color: #000000;
+            
+        }
+        .dark-mode .testimonial {
+            transition: margin 4s ease-in-out, padding 4s ease-in-out, color 4s ease-in-out, border 4s ease-in-out, border-color 3s ease-in-out, scale 3s ease-in-out, margin-top 3s ease-in-out, margin-bottom 3s ease-in-out;
+scale: 0.9;
+padding: 0px;
+border-color: #000000;
+margin-top: -55px;
+margin-bottom: -55px;
+        }
+        .dark-mode .author {
+        font-size: 0px;
+        }
+        .dark-mode .testimonial:hover {
+            background-color: #00000000;
+        }
+.dark-mode #goback {
+    transition: opacity 2s ease-in-out;
+    opacity: 0;
+}
     </style>
 </head>
 <body>
     <h1>Testimonials</h1>
-    <div class="testimonial">
-<p>"Yantra is very lightweight, it is  custimizable and supports scripting with Lua but those things requires the pro version, which i'd say it very low cost.
-    The community is overall nice and caring, while the developer is open to every help and feature request"</p>        <div class="author">- Axolotl</div>
-    </div>
-    <div class="testimonial">
-        <p>"Yantra Launcher is the best CLI homescreen option available by far at the moment. I've been using it for about a year and I can't imagine going back. It encourages me to spend my screentime more deliberately while offering a ton of utility that can't be found anywhere else. I love this app!"</p>
-        <div class="author">- Cod3Bre4ker
-        </div>
-    </div>
-    <div class="testimonial">
-        <p>"yantra is a very customizable launcher and because its text based it means few distruction + faster = productivity"</p>
-        <div class="author">- opipoy</div>
-       
-    </div>
-    <div class="testimonial">
-        <p>"Yantra Launcher is not just another productivity launcher, it can do lots and lots of stuff, without leaving the homescreen :O"</p>
-        <div class="author">- hammad</div>    </div>
+    <a href="javascript:void(0);" onclick="darkenAndClose()" id="goback">go back</a>
+<div class="testimonial">
+    <p>"Yantra is very<span id="main-stuff"> lightweight</span>, it is<span id="main-stuff"> customizable</span> and supports scripting with Lua but those things require the pro version, which I'd say is very low cost.  
+    The community is overall nice and caring, while the developer is open to every help and feature request."</p>        
+    <div class="author">- Axolotl</div>
+</div>
 
-        <div class="testimonial">
-            <p>"Yantra launcher is easy to use, functional, and well maintained. The lead dev is kind and excited about the project, and very helpful with questions and concerns. The app itself is easily moddable and very responsive."</p>
-            <div class="author">- dropoflife</div>    </div>    
-            <footer><a href="javascript:window.close();"">go back</a></footer>
+<div class="testimonial">
+    <p>"Yantra Launcher is the<span id="main-stuff"> best CLI homescreen option</span> available by far at the moment. I've been using it for about a year and I can't imagine going back.  
+    It encourages me to spend my screentime more deliberately while offering a<span id="main-stuff"> ton of utility</span> that can't be found anywhere else. I love this app!"</p>
+    <div class="author">- Cod3Bre4ker</div>
+</div>
 
+<div class="testimonial">
+    <p>"Yantra is a very customizable launcher and because it's<span id="main-stuff"> text-based</span>, it means<span id="main-stuff"> fewer distractions</span> +<span id="main-stuff"> faster</span> =<span id="main-stuff"> productivity</span>."</p>
+    <div class="author">- opipoy</div>
+</div>
+
+<div class="testimonial">
+    <p>"Yantra Launcher is not just another productivity launcher, it can do<span id="main-stuff"> lots and lots of stuff</span> without leaving the homescreen :O"</p>
+    <div class="author">- hammad</div>    
+</div>
+
+<div class="testimonial">
+    <p>"Yantra Launcher is<span id="main-stuff"> easy to use</span>,<span id="main-stuff"> functional</span>, and<span id="main-stuff"> well-maintained</span>. The lead dev is kind and excited about the project and very helpful with questions and concerns.  
+    The app itself is<span id="main-stuff"> easily moddable</span> and<span id="main-stuff"> very responsive</span>."</p>
+    <div class="author">- dropoflife</div>    
+</div>    
+<footer>
+   
+</footer>
         </body>
+        <script>
+              function darkenAndClose() {
+            document.body.classList.add('dark-mode');
+            setTimeout(() => {
+                window.close();
+            }, 6000);
+        }
+        </script>
 </html>
