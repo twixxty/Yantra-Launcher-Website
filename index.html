@@ -301,6 +301,11 @@ margin-top: 3px;
                 });
         
                 setActiveWords(newActiveWords);
+                if (matchedWord === 'sussyshots') {
+                                document.getElementById('screenshotFrame').classList.add('active');
+                            } else {
+                                window.open(url, '_blank');
+        }
                 setTypedText(inputWithoutSpaces);
             };
         
