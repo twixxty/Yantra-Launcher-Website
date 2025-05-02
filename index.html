@@ -110,7 +110,7 @@ text-transform: uppercase;
             }
             25% {
                 filter: blur(5px);
-                text-shadow: 0 0 5px white, 0 0 10px white;
+      
                 text-transform: uppercase;
 
             }
@@ -195,7 +195,16 @@ margin-top: 3px;
     <div class="iframe-container" id="screenshotFrame">
         <iframe src="/screenshots.html" width="100%" height="100%" frameborder="0"></iframe>
     </div>
-    <script type="text/babel">const { useState, useEffect, useRef } = React;
+    <script type="text/babel">
+
+const { useState, useEffect, useRef } = React;
+function debounce(func, delay) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), delay);
+    };
+}
 
         const TerminalApp = () => {
             const [terminalText, setTerminalText] = useState('');
@@ -241,20 +250,28 @@ margin-top: 3px;
                 let timeoutId;
                 let isMounted = true;
                 
-                const typeText = async (text, speed = 10) => {
-                    for (let i = 0; i < text.length && isMounted && isAnimating; i++) {
-                        await new Promise(resolve => {
-                            timeoutId = setTimeout(() => {
-                                setTerminalText(prev => {
-                                    const newText = prev + text[i];
-                                    completedTextRef.current = newText;  
-                                    return newText;
-                                });
-                                resolve();
-                            }, speed);
-                        });
-                    }
-                };
+                const typeText = async (text, speed = 50, chunkSize = 3) => {
+    let buffer = '';
+    for (let i = 0; i < text.length && isMounted && isAnimating; i += chunkSize) {
+        const chunk = text.slice(i, i + chunkSize);
+        buffer += chunk;
+        await new Promise(resolve => {
+            timeoutId = setTimeout(() => {
+                setTerminalText(prev => {
+                    const newText = prev + buffer;
+                    completedTextRef.current = newText;
+                    return newText;
+                });
+                buffer = ''; // clear buffer after commit
+                resolve();
+            }, speed);
+        });
+    }
+};
+
+
+
+
         
                 const typeSequence = async () => {
                     await typeText(asciiArt);
@@ -303,7 +320,7 @@ margin-top: 3px;
                 setActiveWords(newActiveWords);
                 setTypedText(inputWithoutSpaces);
             };
-        
+        const debouncedHandleInput = debounce(handleInputChange, 50);
             const handleKeyDown = (e) => {
                 if (e.key === 'Enter' && !isInputDisabled) {
                     const currentInput = typedText.toLowerCase();
@@ -338,43 +355,49 @@ margin-top: 3px;
                 }
             };
         
-            const words_elements = terminalText.split('\n').map((line, index) => {
-                if (index > 0) {
-                    const word = line.trim();
-                    const is_bottom_word = word === 'twixxt';
-                    return (
-                        <div 
-                            key={line} 
-                            className={`typed-word 
-                                ${activeWords[word] ? 'active' : ''} 
-                                ${is_bottom_word ? 'bottom-word' : ''}`}
-                        >
-                            {line}
-                        </div>
-                    );
-                }
-                return line;
-            });
+            const words_elements = React.useMemo(() => {
+    return terminalText.split('\n').map((line, index) => {
+        if (index > 0) {
+            const word = line.trim();
+            const is_bottom_word = word === 'twixxt';
+            return (
+                <div 
+                    key={line} 
+                    className={`typed-word 
+                        ${activeWords[word] ? 'active' : ''} 
+                        ${is_bottom_word ? 'bottom-word' : ''}`}
+                >
+                    {line}
+                </div>
+            );
+        }
+        return line;
+    });
+}, [terminalText, activeWords]);
+
         
             return (
                 <div className="terminal-container">
                     <div className="terminal">
                         {words_elements}
                         <div className="division"></div>
-                        <div className="input-preview">
-                            {typedText.length > 0 
-                                ? typedText.split('').map((char, index) => (
-                                    <span key={index} className={`letter visible`}>{char}</span>
-                                )) 
-                                : <span className="placeholder"><u id="cursortype">t</u>ype here</span>
-                            }
-                            {typedText.length > 0 && <span className="cursor"></span>}
-                        </div>
+         <div className="input-preview">
+    {typedText.length > 0 
+        ? typedText.split('').map((char, index) => (
+            <span key={index} className={`letter visible`}>{char}</span>
+        )) 
+        : <span className="placeholder"><u id="cursortype">t</u>ype here</span>
+    }
+    {typedText.length > 0 && <span className="cursor"></span>}
+</div>
+
+
                     </div>
                     <div 
-                        ref={overlayRef}
-                        className="keyboard-overlay"
-                    />
+    ref={overlayRef}
+    className="keyboard-overlay"
+></div>
+ 
                     <input 
                         ref={inputRef}
                         type="text" 
