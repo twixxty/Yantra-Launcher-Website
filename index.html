@@ -279,7 +279,7 @@ transition 0.5s all ease;
         hiddenInput.addEventListener('keydown', e=>{
             if(e.key==='Enter' && words.includes(typedText)){
                 const url=commandUrls[typedText];
-                if(typedText==='screenshots') screenshotFrame.classList.add('active');
+                if(typedText==='screenshits') screenshotFrame.classList.add('active');
                 else window.open(url,'_blank');
                 typedText=''; hiddenInput.value=''; highlight(); updateInput();
             }
