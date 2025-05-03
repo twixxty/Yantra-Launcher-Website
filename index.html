@@ -98,19 +98,23 @@
             white-space: nowrap;
             margin-top: 0px;
             cursor: pointer;
-            transition: scale 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            transition: all 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
         }
         
-        .typed-word.active {
-            margin: 4px;
-            background-color: white;
-            font-weight: bolder;
-            color: black;
-            scale: 1.2;
-            padding: 3px;
-            animation: typewriter 0.5s;
-            text-transform: uppercase;
-        }
+    .typed-word.active {
+    transform: scale(1.2);
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+    padding: 2px 4px;
+    text-transform: uppercase;
+transition 0.5s all ease;
+    /* restart the blur animation every time */
+    animation: twriter 0.5s ease-in-out both;
+}
+
+
+
         
         @keyframes twriter {
             0% {
