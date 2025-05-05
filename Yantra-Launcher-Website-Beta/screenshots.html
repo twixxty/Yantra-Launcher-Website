@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="https://play-lh.googleusercontent.com/nzBI9M3bz9u-z3QxEzgFaT6qOkxh3xQLPOT-vWkhphUIdXDCUNADA75eBKsbHCHqrLQ=w480-h960">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshots</title>
+    <style>
+        ::-webkit-scrollbar {
+    width: 1px;
+    height: 1px; 
+}
+.blur {
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+.animatable {
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+  .animatable.animate-in {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+@keyframes fadeInZoom {
+    from{
+        opacity: 0;
+        filter: blur(8px);
+    }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+.page-wrapper.out {
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 1s ease, filter 1s ease;
+  pointer-events: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 10px; 
+}
+
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+ {
+    scrollbar-width{thin};
+    scrollbar-color{rgba(0, 0, 0, 0) transparent};
+}
+@font-face {
+            font-family: "vintage";
+            font-style: normal;
+            src: url(fonts/ahronbd.ttf) format("woff");
+        }
+         @font-face {
+            font-family: "maple";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Regular.ttf) format("woff");
+        }
+        @font-face {
+            font-family: "maplebold";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-ExtraBold.ttf) format("woff");
+        }      @font-face {
+            font-family: "mapleitalic";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Italic.ttf) format("woff");
+        }
+        a {
+            text-decoration: underline dotted;
+            text-transform: lowercase;
+            transition: scale 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+scale: 1;
+        }
+        a:hover {
+            scale: 1.1;
+            text-size-adjust: 100px;
+            margin: 4px;
+            background-color: white;
+            font-weight: bolder;
+            color: black;
+            animation: typewriter 0.5s;
+text-transform: uppercase;
+padding: 5px;
+                }
+        body, a {
+            font-family: maple, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            font-family: vintage;
+            margin-bottom: 20px;
+            font-weight: bolder;
+            font-size: 6vw;
+        }
+        h2 {
+            font-size: 5vw;
+        }
+        .gallery {
+            max-width: 1000px;
+            margin: auto;
+        }
+        .screenshot-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        .screenshot-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .screenshot-item img {
+            
+            width: 40%;
+            border-radius: 8px;
+            transition: scale 0.3s ease-in-out, padding 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+        } 
+        .screenshot-item img:hover {
+            
+            width: 40%;
+            scale: 1.1;
+            padding: 20px;
+        }
+        .screenshot-item .text {
+            font-family: mapleitalic;
+            width: 50%;
+            text-align: left;
+        }
+        @keyframes typewriter {
+            0% {
+              filter: blur(0px);
+              text-transform: lowercase;
+
+            }
+            25% {
+                filter: blur(5px);
+                text-shadow: 0 0 5px white, 0 0 10px white;
+                text-transform: uppercase;
+
+            }
+            100% {
+               filter: blur(0px);
+               text-transform: uppercase;
+
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animatable blur">
+    <h1>Screenshots</h1>
+    <div class="gallery">
+        <div class="screenshot-item">
+            <img src="pictures/Screenshot_2025-01-14-17-18-39-283_com.coderGtm.yantra.pro.jpg" alt="Screenshot 1">
+            <div class="text">
+                <h2>😋</h2>
+                <p>a setup by <b>hackTroz</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/Screenshot_2025-02-16-13-05-08-91_30e6aa14e1d3b0420ccc4e7f2a2bf299.jpg" alt="Screenshot 2">
+            <div class="text">
+                <h2>cinderella</h2>
+                <p>a setup by <b>Aris</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/Screenshot_20250212-214136.png" alt="Screenshot 3">
+            <div class="text">
+                <h2>simplicity</h2>
+                <p>a setup by <b>hammad</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/image0.png" alt="Screenshot 4">
+            <div class="text">
+                <h2>bloodshot</h2>
+                <p>a setup by <b>Pizza Translator</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/vacuum.jpg" alt="Screenshot 3">
+            <div class="text">
+                <h2>Vacuum</h2>
+                <p>a setup by <b>Cod3Bre4ker</b></p>
+            </div>
+        </div>
+        <div class="screenshot-item">
+            <img src="pictures/simple.jpg" alt="Screenshot 4">
+            <div class="text">
+                <h2>simple as heck</h2>
+                <p>a setup by <b>farivau</b></p>
+            </div>
+        </div>
+    </div>
+    <footer><a href="https://yantra-launcher.vercel.app">go back</a></footer>
+
+</div>
+</body>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const animatable = document.querySelector('.animatable');
+  
+      // Remove blur after 0.5s on load
+      setTimeout(() => {
+        animatable.classList.remove('blur');
+      }, 500);
+  
+      // Handle link click with blur + delay
+      document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", e => {
+          e.preventDefault();
+          const href = link.href;
+  
+          animatable.classList.add('blur');
+  
+          setTimeout(() => {
+            window.location.href = href;
+          }, 1500); // Delay 0.5s after blur is added
+        });
+      });
+    });
+  </script>
+  </html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>   
+      <meta charset="UTF-8">
+  <meta name="description" content="Transform your Android home screen into an interactive terminal with Yantra Launcher. Boost productivity with a distraction-free, fast, and customizable command-line interface.">
+  <meta name="keywords" content="Yantra Launcher, CLI Launcher, Android Terminal Launcher, Minimal Launcher, Productivity App, Command Line Interface, Android Customization, Terminal Home Screen">
+  <meta name="author" content="coderGtm">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+
+  
+  <meta property="og:title" content="Yantra Launcher – Minimal CLI-Based Android App Launcher">
+  <meta property="og:description" content="Experience a distraction-free, fast, and customizable command-line interface on your Android device with Yantra Launcher.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yantra-launcher.vercel.app">
+  <meta property="og:image" content="https://private-user-images.githubusercontent.com/66418526/273432218-1e998174-5481-4b5d-96bb-3ebc7e4d857e.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Yantra Launcher – Minimal CLI-Based Android App Launcher">
+  <meta name="twitter:description" content="Transform your Android home screen into an interactive terminal with Yantra Launcher. Enhance productivity with a minimalistic CLI interface.">
+  <meta name="twitter:image" content="https://private-user-images.githubusercontent.com/66418526/273432218-1e998174-5481-4b5d-96bb-3ebc7e4d857e.png">
+  <link rel="canonical" href="https://yantra-launcher.vercel.app">
+    
+    <link rel="icon" type="image/png" href="https://play-lh.googleusercontent.com/nzBI9M3bz9u-z3QxEzgFaT6qOkxh3xQLPOT-vWkhphUIdXDCUNADA75eBKsbHCHqrLQ=w480-h960">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yantra Launcher</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <style>
+        @font-face {
+            font-family: "maple";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Regular.ttf) format("woff");
+        }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: black;
+            color: white;
+            font-family: 'maple', monospace;
+            overscroll-behavior: contain;
+        }
+        
+        #root {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            text-shadow: 30px 30px 50px rgba(0, 0, 0, 0.7);
+        }
+        
+        .terminal-container {
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .terminal {
+            white-space: pre-wrap;
+            text-align: center;
+            font-size: 1rem;
+            line-height: 1;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .keyboard-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        
+        .hidden-input {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            opacity: 0;
+        }
+        
+        .typed-word {
+            width: auto;
+            display: inline-block;
+            white-space: nowrap;
+            margin-top: 0px;
+            cursor: pointer;
+            transition: scale 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+        
+        .typed-word.active {
+            margin: 4px;
+            background-color: white;
+            font-weight: bolder;
+            color: black;
+            scale: 1.2;
+            padding: 3px;
+            animation: typewriter 0.5s;
+            text-transform: uppercase;
+        }
+        
+        @keyframes typewriter {
+            0% {
+              filter: blur(0px);
+              text-transform: lowercase;
+            }
+            25% {
+                filter: blur(5px);
+                text-transform: uppercase;
+            }
+            100% {
+               filter: blur(0px);
+               text-transform: uppercase;
+            }
+        }
+        
+        .division {
+            margin-top: 5px;
+            width: 80%;
+            height: 2px;
+            background-color: #A0A0A0;
+        }
+        
+        .input-preview {
+            cursor: text;
+            color: #A0A0A0;
+            scale: 0.8;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 9px;
+            height: 2px;
+            margin-top: 3px;
+            background-color: white;
+            animation: blink 1s infinite;
+            transition: opacity 0s none;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        @media (max-width: 600px) {
+            .terminal {
+                font-size: 0.9rem;
+            }
+        }
+        
+        .iframe-container {
+            position: fixed;
+            top: 100vh;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            transition: top 0.5s ease-in-out;
+        }
+        
+        .iframe-container.active {
+            top: 0;
+        }
+        
+        #cursortype {
+            animation: blinkcursor 1s infinite;
+        }
+        
+        @keyframes blinkcursor {
+            0%, 100% { text-decoration: none; }
+            50% { text-decoration: underline 2px white; text-decoration-thickness: 2px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <div class="iframe-container" id="screenshotFrame">
+        <iframe src="/screenshots.html" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        
+        function debounce(func, delay) {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func(...args), delay);
+            };
+        }
+
+        const TerminalApp = () => {
+            // Constants
+            const asciiArt = `####################
+        ####################
+        ####################
+        ####################
+        ####............####
+        ####################
+        ####........########
+        ####################
+        ####################
+        ####################
+        ####################`;
+            
+            const words = ['install', 'github', 'testimonials', 'community', 'screenshots'];
+            
+            const commandUrls = {
+                install: '/install.html',
+                github: 'https://github.com/coderGtm/yantra-app-launcher',
+                testimonials: '/testimonials.html',
+                community: 'https://discord.gg/yfUPvrkDmr',
+                screenshots: '/screenshots.html',
+            };
+            
+            // State
+            const [terminalText, setTerminalText] = useState('');
+            const [typedText, setTypedText] = useState('');
+            const [isInputDisabled, setIsInputDisabled] = useState(false);
+            const [isAnimating, setIsAnimating] = useState(true);
+            const [activeWords, setActiveWords] = useState({
+                install: false,
+                github: false,
+                testimonials: false,
+                community: false,
+                screenshots: false
+            });
+            
+            // Refs
+            const inputRef = useRef(null);
+            const overlayRef = useRef(null);
+            const completedTextRef = useRef('');
+            
+            // Effects
+            useEffect(() => {
+                if (!isAnimating) return;
+                
+                let timeoutId;
+                let isMounted = true;
+                
+                const typeText = async (text, speed = 50, chunkSize = 3) => {
+                    let buffer = '';
+                    for (let i = 0; i < text.length && isMounted && isAnimating; i += chunkSize) {
+                        const chunk = text.slice(i, i + chunkSize);
+                        buffer += chunk;
+                        await new Promise(resolve => {
+                            timeoutId = setTimeout(() => {
+                                setTerminalText(prev => {
+                                    const newText = prev + buffer;
+                                    completedTextRef.current = newText;
+                                    return newText;
+                                });
+                                buffer = '';
+                                resolve();
+                            }, speed);
+                        });
+                    }
+                };
+                
+                const typeSequence = async () => {
+                    await typeText(asciiArt);
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    for (const word of words) {
+                        if (!isMounted || !isAnimating) break;
+                        await typeText('\n' + word);
+                        await new Promise(resolve => setTimeout(resolve, 200));
+                    }
+                };
+                
+                typeSequence();
+                
+                const overlay = overlayRef.current;
+                const focusInput = () => {
+                    if (inputRef.current && !isInputDisabled) {
+                        inputRef.current.focus();
+                    }
+                };
+                
+                if (overlay) {
+                    overlay.addEventListener('touchstart', focusInput);
+                    overlay.addEventListener('click', focusInput);
+                }
+                
+                return () => {
+                    isMounted = false;
+                    if (timeoutId) clearTimeout(timeoutId);
+                    if (overlay) {
+                        overlay.removeEventListener('touchstart', focusInput);
+                        overlay.removeEventListener('click', focusInput);
+                    }
+                };
+            }, [isAnimating]);
+            
+            // Handlers
+            const handleInputChange = (e) => {
+                const inputWithoutSpaces = e.target.value.replace(/\s/g, '').toLowerCase();
+                
+                const newActiveWords = { ...activeWords };
+                words.forEach(word => {
+                    newActiveWords[word] = inputWithoutSpaces === word;
+                });
+                
+                setActiveWords(newActiveWords);
+                setTypedText(inputWithoutSpaces);
+            };
+            
+            const handleKeyDown = (e) => {
+                if (e.key === 'Enter' && !isInputDisabled) {
+                    const currentInput = typedText.toLowerCase();
+                    const matchedWord = words.find(word => word === currentInput);
+                    
+                    if (matchedWord) {
+                        const url = commandUrls[matchedWord];
+                        if (url) {
+                            setIsInputDisabled(true);
+                            setTypedText('');
+                            setIsAnimating(true);
+                            setTerminalText(completedTextRef.current);
+                            
+                            const resetActiveWords = {};
+                            words.forEach(word => {
+                                resetActiveWords[word] = false;
+                            });
+                            setActiveWords(resetActiveWords);
+                            
+                            if (matchedWord === 'screenshots') {
+                                document.getElementById('screenshotFrame').classList.add('active');
+                            } else {
+                                window.open(url, '_blank');
+                            }
+                            
+                            setTimeout(() => {
+                                setIsInputDisabled(false);
+                            }, 1000);
+                        }
+                    }
+                }
+            };
+            
+            // Render
+            const wordsElements = terminalText.split('\n').map((line, index) => {
+                if (index > 0) {
+                    const word = line.trim();
+                    return (
+                        <div 
+                            key={index} 
+                            className={`typed-word ${activeWords[word] ? 'active' : ''}`}
+                        >
+                            {line}
+                        </div>
+                    );
+                }
+                return line;
+            });
+            
+            return (
+                <div className="terminal-container">
+                    <div className="terminal">
+                        {wordsElements}
+                        <div className="division"></div>
+                        <div className="input-preview">
+                            {typedText.length > 0 
+                                ? typedText
+                                : <span className="placeholder"><u id="cursortype">t</u>ype here</span>
+                            }
+                            {typedText.length > 0 && <span className="cursor"></span>}
+                        </div>
+                    </div>
+                    <div 
+                        ref={overlayRef}
+                        className="keyboard-overlay"
+                    ></div>
+                    <input 
+                        ref={inputRef}
+                        type="text" 
+                        className="hidden-input" 
+                        value={typedText}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
+                        disabled={isInputDisabled}
+                    />
+                </div>
+            );
+        };
+        
+        ReactDOM.render(<TerminalApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="keyboard/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yantra Launcher</title>
+    <link rel="icon" type="image/png" href="https://play-lh.googleusercontent.com/nzBI9M3bz9u-z3QxEzgFaT6qOkxh3xQLPOT-vWkhphUIdXDCUNADA75eBKsbHCHqrLQ=w480-h960">
+       <style>
+        .terminal-container {
+  transform-origin: center center;
+}
+          main.transition-out {
+      filter: blur(8px);
+      transform: scale(0.95);
+      opacity: 0;
+      transition: all 0.5s ease;
+      pointer-events: none;
+    }
+        @font-face {
+            font-family: "maple";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Regular.ttf) format("woff");
+        }
+        .placeholder u {
+    text-decoration: none;
+    display: inline-block;
+    animation: blinkcursor 1s infinite;
+}
+
+@keyframes blinkcursor {
+    0%, 100% { opacity: 1; }
+    50%     { opacity: 0; }
+}
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: black;
+            color: white;
+            font-family: 'maple', monospace;
+            overscroll-behavior: contain;
+        }
+        
+        #root {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            text-shadow: 30px 30px 50px rgba(0, 0, 0, 0.7);
+        }
+   .terminal-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+        
+        .terminal {
+            white-space: pre-wrap;
+            text-align: left;
+            font-size: 1rem;
+            line-height: 1;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: left;
+        }
+        .typed-word.command {
+  align-self: center;         /* center just the commands */
+}
+        .keyboard-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        
+.input-preview {
+    position: relative;
+}
+
+.hidden-input {
+    position: absolute;
+    top: 60%;       /* sit immediately below the “type here” line */
+    left: 50%;       /* center it under the preview text */
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 800px;
+    opacity: 0;
+    pointer-events: none;  /* still focusable via JS, but won’t catch stray taps */
+}
+
+        
+        .typed-word {
+            width: auto;
+            display: inline-block;
+            white-space: nowrap;
+            margin-top: 0px;
+            cursor: pointer;
+            transition: all 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+        
+    .typed-word.active {
+        
+    transform: scale(1.2);
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+    padding: 2px 4px;
+    text-transform: uppercase;
+transition 0.5s all ease;
+    /* restart the blur animation every time */
+    animation: twriter 0.5s ease-in-out both;
+}
+
+
+
+        
+        @keyframes twriter {
+            0% {
+              filter: blur(0px);
+              text-transform: lowercase;
+            }
+            25% {
+                filter: blur(5px);
+                text-transform: uppercase;
+            }
+            100% {
+               filter: blur(0px);
+               text-transform: uppercase;
+            }
+        }
+        
+        .division {
+            margin-top: 5px;
+            width: 40%;
+            height: 2px;
+            background-color: #A0A0A0;
+        }
+        
+        .input-preview {
+            cursor: text;
+            color: #A0A0A0;
+            scale: 0.8;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 9px;
+            height: 2px;
+            margin-top: 3px;
+            background-color: white;
+            animation: blink 1s infinite;
+            transition: opacity 0s none;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        @media (max-width: 600px) {
+            .terminal {
+                font-size: 0.9rem;
+            }
+        }
+        
+        .iframe-container {
+            position: fixed;
+            top: 100vh;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            transition: top 0.5s ease-in-out;
+        }
+        
+        .iframe-container.active {
+            top: 0;
+        }
+        
+        #cursortype {
+            animation: blinkcursor 1s infinite;
+        }
+        
+        @keyframes blinkcursor {
+            0%, 100% { text-decoration: none; }
+            50% { text-decoration: underline 2px white; text-decoration-thickness: 2px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="keyboard"><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+        <div class="keyboardbg">
+                <div tabindex="0" id="keyboardBase" class="keyboard-base">
+                    <div data='192' class="key inkey">~</div>
+                    <div data='49' class="key inkey">1</div>
+                    <div data='50' class="key inkey">2</div>
+                    <div data='51' class="key inkey">3</div>
+                    <div data='52' class="key inkey">4</div>
+                    <div data='53' class="key inkey">5</div>
+                    <div data='54' class="key inkey">6</div>
+                    <div data='55' class="key inkey">7</div>
+                    <div data='56' class="key inkey">8</div>
+                    <div data='57' class="key inkey">9</div>
+                    <div data='48' class="key inkey">0</div>
+                    <div data='189' class="key inkey">-</div>
+                    <div data='187' class="key inkey">+</div>
+                    <div data='8' class="key delete">Backspace</div>
+                    <div data='9' class="key tab">Tab</div>
+                    <div data='81' class="key inkey">Q</div>
+                    <div data='87' class="key inkey">w</div>
+                    <div data='69' class="key inkey">E</div>
+                    <div data='82' class="key inkey">R</div>
+                    <div data='84' class="key inkey">T</div>
+                    <div data='89' class="key inkey">Y</div>
+                    <div data='85' class="key inkey">U</div>
+                    <div data='73' class="key inkey">I</div>
+                    <div data='79' class="key inkey">O</div>
+                    <div data='80' class="key inkey">P</div>
+                    <div data='219' class="key inkey">[</div>
+                    <div data='221' class="key inkey">]</div>
+                    <div data='220' class="key inkey backslash">\</div>
+                    <div data='20' class="key capslock">CapsLock</div>
+                    <div data='65' class="key inkey">A</div>
+                    <div data='83' class="key inkey">S</div>
+                    <div data='68' class="key inkey ">D</div>
+                    <div data='70' class="key inkey ">F</div>
+                    <div data='71' class="key inkey ">G</div>
+                    <div data='72' class="key inkey ">H</div>
+                    <div data='74' class="key inkey ">J</div>
+                    <div data='75' class="key inkey ">K</div>
+                    <div data='76' class="key inkey ">L</div>
+                    <div data='186' class="key inkey ">;</div>
+                    <div data='222' class="key inkey ">'</div>
+                    <div data='13' class="key return">Enter</div>
+                    <div data='16' class="key leftshift">Shift</div>
+                    <div data='90' class="key inkey ">Z</div>
+                    <div data='88' class="key inkey ">X</div>
+                    <div data='67' class="key inkey ">C</div>
+                    <div data='86' class="key inkey ">V</div>
+                    <div data='66' class="key inkey ">B</div>
+                    <div data='78' class="key inkey ">N</div>
+                    <div data='77' class="key inkey ">M</div>
+                    <div data='188' class="key inkey ">,</div>
+                    <div data='190' class="key inkey ">.</div>
+                    <div data='191' class="key inkey ">/</div>
+                    <div data='16' class="key rightshift">Shift</div>
+                    <div data='17' class="key leftctrl">Ctrl</div>
+                    <div data='18' class="key">Alt</div>
+                    <div data='90' class="key command">Command</div>
+                    <div data='32' class="key inkey  space">Space</div>
+                    <div data='90' class="key command">command</div>
+                    <div data='18' class="key">Alt</div>
+                    <div data='17' class="key">Ctrl</div>
+                    <div data='0' class="key">Fn</div>
+                </div>
+            </div>
+        </div>
+    <div class="terminal-container">
+        <div class="terminal" id="terminal"></div>
+        <div class="division"></div>
+        <div class="input-preview" id="inputPreview"><span class="placeholder"><u>t</u>ype here</span></div>
+    </div>
+    <div class="keyboard-overlay" id="keyboardOverlay"></div>
+    <input type="text" id="hiddenInput" class="hidden-input" autocomplete="off" spellcheck="false" />
+
+    <div class="iframe-container" id="screenshotFrame">
+        <iframe src="/screenshots.html" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+
+    <script>
+    (function(){
+        const asciiArt = `####################
+####################
+####################
+####################
+####............####
+####################
+####........########
+####################
+####################
+####################
+####################`;
+        const words = ['install','github','testimonials','community','screenshots'];
+        const commandUrls = {
+            install:'/install.html',
+            github:'https://github.com/coderGtm/yantra-app-launcher',
+            testimonials:'/testimonials.html',
+            community:'https://discord.gg/yfUPvrkDmr',
+            screenshots:'/screenshots.html'
+        };
+        const terminal = document.getElementById('terminal');
+        const inputPreview = document.getElementById('inputPreview');
+        const hiddenInput = document.getElementById('hiddenInput');
+        const keyboardOverlay = document.getElementById('keyboardOverlay');
+        const screenshotFrame = document.getElementById('screenshotFrame');
+        let typedText = '';
+
+        function appendLine(text, isWord){
+            const div = document.createElement('div');
+            if(isWord) div.className='typed-word';
+            div.textContent = text;
+            terminal.appendChild(div);
+        }
+        function updateInput(){
+            inputPreview.innerHTML='';
+            if(typedText){
+                inputPreview.textContent = typedText;
+                const cur = document.createElement('span'); cur.className='cursor';
+                inputPreview.appendChild(cur);
+            } else {
+                const ph = document.createElement('span'); ph.className='placeholder';
+                const u = document.createElement('u'); u.textContent='t'; ph.appendChild(u);
+                ph.insertAdjacentText('beforeend','ype here'); inputPreview.appendChild(ph);
+            }
+        }
+        function highlight(){
+            document.querySelectorAll('.typed-word').forEach(el=>{
+                el.classList.toggle('active', words.includes(el.textContent.trim()) && el.textContent.trim()===typedText);
+            });
+        }
+        async function typeSequence(){
+            for(const line of asciiArt.split('\n')){ await typeLine(line); }
+            await sleep(500);
+            for(const w of words){ await typeLine(w); await sleep(200); }
+        }
+      /**
+ * Creates a new line in the terminal.
+ * @param {string} text    – initial text for the line (empty to start typing)
+ * @param {boolean} isCommand – true if this line is one of your commands
+ */
+function appendLine(text, isCommand) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  if (isCommand) div.classList.add('typed-word', 'command');
+  terminal.appendChild(div);
+}
+
+async function typeLine(line) {
+  const isCommand = words.includes(line);
+
+  appendLine('', isCommand);
+  const el = terminal.lastChild;
+
+  let delay = 0;
+  for (let i = 0; i < line.length; i++) {
+    el.textContent += line[i];
+    await sleep(delay);
+    if (delay < 25) delay += 3;
+  }
+
+}
+
+
+
+        function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+        hiddenInput.addEventListener('input', e=>{
+            typedText = e.target.value.replace(/\s/g,'').toLowerCase();
+            highlight(); updateInput();
+        });
+        hiddenInput.addEventListener('keydown', e=>{
+            if (e.key === 'Enter' && words.includes(typedText)) {
+    const url = commandUrls[typedText];
+    const container = document.querySelector('.terminal-container');
+
+// Apply transform styles
+container.style.transition = 'all 1s ease';
+container.style.transformOrigin = 'center center';
+container.style.filter = 'blur(8px)';
+container.style.transform = 'scale(0.95)';
+container.style.opacity = '0';
+
+
+    // Wait 1s for animation, then 2s for navigation
+    setTimeout(() => {
+        // Navigation only if still focused
+        if (document.hasFocus()) {
+            if (typedText === 'screenshots') {
+                screenshotFrame.classList.add('active');
+            } else {
+                window.location.href = url;
+            }
+        }
+    }, 1500); // 1s + 2s = 3s total
+
+    typedText = '';
+    hiddenInput.value = '';
+    highlight();
+    updateInput();
+
+    // Restore if tab regains focus
+    window.addEventListener('focus', () => {
+        container.style.transition = 'all 0.5s ease';
+        container.style.filter = '';
+        container.style.transform = '';
+        container.style.opacity = '1';
+    }, { once: true });
+}
+
+        });
+        [keyboardOverlay].forEach(el=>{
+            el.addEventListener('click',()=>hiddenInput.focus());
+            el.addEventListener('touchstart',()=>hiddenInput.focus());
+        });
+if (window.matchMedia('(max-width: 600px)').matches) {
+    const scrollOffset = 50; 
+    function autoScroll() {
+        const { top } = inputPreview.getBoundingClientRect();
+        window.scrollTo({
+            top: window.pageYOffset + top - scrollOffset,
+            behavior: 'smooth'
+        });
+    }
+    hiddenInput.addEventListener('focus', autoScroll);
+    hiddenInput.addEventListener('input', autoScroll);
+}
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+            hiddenInput.focus(); typeSequence();
+        });
+    })();
+    $(document).ready(function () {
+            window.onload = function() {
+            let input = $("#inputbox").focus();
+            }
+            $('#hidden-input').ready(function () {
+                $(this).css({
+                    opacity: '1'
+                })
+                $(this).on('keydown', function (event) {
+                    let keys = $('.key');
+                    let unicode = event.keyCode; 
+                    for (let i = 0; i < keys.length; i++) {
+                        if (keys[i].getAttribute('data') == unicode) {
+                            keys[i].setAttribute('style',
+                                'background: #FFF; color: #FfF'
+                                )
+                        } else {
+                            keys[i].setAttribute('style',
+                                'background: #000; transition: all 0.3s')
+                        }
+                        setTimeout(function () {
+                            keys[i].setAttribute('style',
+                                'background: #000000; transition: all 0.3s')
+                        }, 100)
+                       
+                    }
+                });
+            })
+            $('#hidden-input').on('blur', function () {
+                let keys = $('.key');
+                for (let i = 0; i < keys.length; i++) {
+                    keys[i].setAttribute('style', 'background: #04122600; transition: all 0.3s');
+                }
+            })
+        })
+    </script>
+</body>
+</html>

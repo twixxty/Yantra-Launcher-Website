@@ -1,0 +1,197 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Install Yantra Launcher</title>
+    </head>
+<style>
+.animatable {
+  opacity: 0;
+  transform: scale(0.95);
+  filter: blur(8px);
+  animation: fadeInZoom 1s ease forwards;
+}
+
+@keyframes fadeInZoom {
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+
+    .out {
+      filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+    }
+footer{
+        }
+        @font-face {
+            font-family: "vintage";
+            font-style: normal;
+            src: url(fonts/ahronbd.ttf) format("woff");
+        }
+         @font-face {
+            font-family: "maple";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Regular.ttf) format("woff");
+        }
+        @font-face {
+            font-family: "maplebold";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-ExtraBold.ttf) format("woff");
+        }      @font-face {
+            font-family: "mapleitalic";
+            font-style: normal;
+            src: url(fonts/MapleMono-TTF/MapleMono-Italic.ttf) format("woff");
+        }
+        ::-webkit-scrollbar {
+            width: 1px;
+            height: 1px; 
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0);
+            border-radius: 10px; 
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+a {
+    padding: 0px;
+    background-color: #00000000;
+}
+        body, a {
+            font-family: maple, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+            font-family: vintage;
+            margin-bottom: 20px;
+            font-weight: bolder;
+            font-size: 50px;
+        }
+        h2 {
+            font-size: 5vw;
+        }
+        .testimonial {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid white;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            transition: scale 0.3s ease-in-out, padding 0.3s ease-in-out, border-radius 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        .testimonial:hover {
+background-color: white;
+color: black;
+            border-radius: 20px;
+            scale: 1.05;
+            padding: 10px;
+        }
+        .testimonial p {
+            font-family: mapleitalic;
+            font-size: 1.2em;
+        }
+        .testimonial .author {
+            font-family: maplebold;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        a {
+            padding: 1px;
+            text-decoration: underline dotted;
+            text-transform: none;
+            font-size: 1em;
+            transition: scale 0.3s ease, padding 0.3s ease-in-out, margin 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+scale: 1;
+        }
+        a:hover {
+            scale: 1.1;
+            text-size-adjust: 100px;
+            margin: 4px;
+            background-color: white;
+            font-weight: bolder;
+            color: black;
+            animation: typewriter 0.5s;
+text-transform: uppercase;
+padding: 5px;
+                }
+                @keyframes typewriter {
+            0% {
+              filter: blur(0px);
+              text-transform: none;
+
+            }
+            25% {
+                filter: blur(5px);
+                text-shadow: 0 0 5px white, 0 0 10px white;
+                text-transform: uppercase;
+
+            }
+            100% {
+               filter: blur(0px);
+               text-transform: uppercase;
+
+            }
+        }
+
+#containerlol {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+</style>
+<body>
+    <main>
+    <div id="containerlol">
+        <div class="animatable">
+<h1>Install</h1>
+<p>Choose one of the options below to install Yantra Launcher</p>
+<a href="https://play.google.com/store/apps/details?id=com.coderGtm.yantra">Yantra Minimal CLI Launcher</a><br><br>
+<a href="https://play.google.com/store/apps/details?id=com.coderGtm.yantra.pro">Yantra CLI Launcher Pro</a><br><br>
+<a href="https://github.com/coderGtm/yantra-app-launcher?tab=readme-ov-file#building">Build it for yourself!</a>
+</div>
+</div>
+</main>
+</body>
+<script>
+  const divs = document.querySelectorAll(".animatable");
+    let clickedLink = null;
+    let delayTimeout = null;
+
+    document.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        clickedLink = link.href;
+
+        divs.forEach(div => div.classList.add("out"));
+
+        delayTimeout = setTimeout(() => {
+          if (document.hasFocus()) {
+            window.location.href = clickedLink;
+          }
+        }, 3000);
+      });
+    });
+
+    window.addEventListener("focus", () => {
+      if (delayTimeout) {
+        clearTimeout(delayTimeout);
+        delayTimeout = null;
+        clickedLink = null;
+        divs.forEach(div => div.classList.remove("out"));
+      }
+    });
+  </script>
+</html>
