@@ -2,10 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+  <meta name="description" content="Transform your Android home screen into an interactive terminal with Yantra Launcher. Boost productivity with a distraction-free, fast, and customizable command-line interface.">
+  <meta name="keywords" content="Yantra Launcher, CLI Launcher, Android Terminal Launcher, Minimal Launcher, Productivity App, Command Line Interface, Android Customization, Terminal Home Screen">
+  <meta name="author" content="coderGtm">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+
+  
+  <meta property="og:title" content="Yantra Launcher – Minimal CLI-Based Android App Launcher">
+  <meta property="og:description" content="Experience a distraction-free, fast, and customizable command-line interface on your Android device with Yantra Launcher.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yantra-launcher.vercel.app">
+  <meta property="og:image" content="https://private-user-images.githubusercontent.com/66418526/273432218-1e998174-5481-4b5d-96bb-3ebc7e4d857e.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Yantra Launcher – Minimal CLI-Based Android App Launcher">
+  <meta name="twitter:description" content="Transform your Android home screen into an interactive terminal with Yantra Launcher. Enhance productivity with a minimalistic CLI interface.">
+  <meta name="twitter:image" content="https://private-user-images.githubusercontent.com/66418526/273432218-1e998174-5481-4b5d-96bb-3ebc7e4d857e.png">
+  <link rel="canonical" href="https://yantra-launcher.vercel.app">
+    <link rel="stylesheet" href="keyboard/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Yantra Launcher</title>
     <link rel="icon" type="image/png" href="https://play-lh.googleusercontent.com/nzBI9M3bz9u-z3QxEzgFaT6qOkxh3xQLPOT-vWkhphUIdXDCUNADA75eBKsbHCHqrLQ=w480-h960">
        <style>
+        .terminal-container {
+  transform-origin: center center;
+}
+          main.transition-out {
+      filter: blur(8px);
+      transform: scale(0.95);
+      opacity: 0;
+      transition: all 0.5s ease;
+      pointer-events: none;
+    }
         @font-face {
             font-family: "maple";
             font-style: normal;
@@ -57,16 +86,18 @@
         
         .terminal {
             white-space: pre-wrap;
-            text-align: center;
+            text-align: left;
             font-size: 1rem;
             line-height: 1;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: left;
+            align-items: left;
         }
-        
+        .typed-word.command {
+  align-self: center;         /* center just the commands */
+}
         .keyboard-overlay {
             position: absolute;
             top: 0;
@@ -102,13 +133,14 @@
         }
         
     .typed-word.active {
+        
     transform: scale(1.2);
     background: #fff;
     color: #000;
     font-weight: bold;
     padding: 2px 4px;
     text-transform: uppercase;
-transition: 0.5s all ease;
+transition 0.5s all ease;
     /* restart the blur animation every time */
     animation: twriter 0.5s ease-in-out both;
 }
@@ -189,6 +221,7 @@ transition: 0.5s all ease;
     </style>
 </head>
 <body>
+    
     <div class="terminal-container">
         <div class="terminal" id="terminal"></div>
         <div class="division"></div>
@@ -257,17 +290,33 @@ transition: 0.5s all ease;
             await sleep(500);
             for(const w of words){ await typeLine(w); await sleep(200); }
         }
-        async function typeLine(line) {
-    appendLine('', false);
-    const el = terminal.lastChild;
-    let delay = 0;
-    for (let i = 0; i < line.length; i++) {
-        el.textContent += line[i];
-        await sleep(delay);
-        if (delay < 25) delay += 3; // starts near instant, eases quickly to a fast pace
-    }
-    if (words.includes(line)) el.className = 'typed-word';
+      /**
+ * Creates a new line in the terminal.
+ * @param {string} text    – initial text for the line (empty to start typing)
+ * @param {boolean} isCommand – true if this line is one of your commands
+ */
+function appendLine(text, isCommand) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  if (isCommand) div.classList.add('typed-word', 'command');
+  terminal.appendChild(div);
 }
+
+async function typeLine(line) {
+  const isCommand = words.includes(line);
+
+  appendLine('', isCommand);
+  const el = terminal.lastChild;
+
+  let delay = 0;
+  for (let i = 0; i < line.length; i++) {
+    el.textContent += line[i];
+    await sleep(delay);
+    if (delay < 25) delay += 3;
+  }
+
+}
+
 
 
         function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
@@ -277,20 +326,51 @@ transition: 0.5s all ease;
             highlight(); updateInput();
         });
         hiddenInput.addEventListener('keydown', e=>{
-            if(e.key==='Enter' && words.includes(typedText)){
-                const url=commandUrls[typedText];
-                if(typedText==='screenshits') screenshotFrame.classList.add('active');
-                else window.open(url,'_blank');
-                typedText=''; hiddenInput.value=''; highlight(); updateInput();
+            if (e.key === 'Enter' && words.includes(typedText)) {
+    const url = commandUrls[typedText];
+    const container = document.querySelector('.terminal-container');
+
+// Apply transform styles
+container.style.transition = 'all 1s ease';
+container.style.transformOrigin = 'center center';
+container.style.filter = 'blur(8px)';
+container.style.transform = 'scale(0.95)';
+container.style.opacity = '0';
+
+
+    // Wait 1s for animation, then 2s for navigation
+    setTimeout(() => {
+        // Navigation only if still focused
+        if (document.hasFocus()) {
+            if (typedText === 'screenshots') {
+                screenshotFrame.classList.add('active');
+            } else {
+                window.location.href = url;
             }
+        }
+    }, 1500); // 1s + 2s = 3s total
+
+    typedText = '';
+    hiddenInput.value = '';
+    highlight();
+    updateInput();
+
+    // Restore if tab regains focus
+    window.addEventListener('focus', () => {
+        container.style.transition = 'all 0.5s ease';
+        container.style.filter = '';
+        container.style.transform = '';
+        container.style.opacity = '1';
+    }, { once: true });
+}
+
         });
         [keyboardOverlay].forEach(el=>{
             el.addEventListener('click',()=>hiddenInput.focus());
             el.addEventListener('touchstart',()=>hiddenInput.focus());
         });
-// Mobile-only auto-scroll: add this to your <script> after your existing event listeners
 if (window.matchMedia('(max-width: 600px)').matches) {
-    const scrollOffset = 50; // px from top of viewport
+    const scrollOffset = 50; 
     function autoScroll() {
         const { top } = inputPreview.getBoundingClientRect();
         window.scrollTo({
@@ -306,6 +386,41 @@ if (window.matchMedia('(max-width: 600px)').matches) {
             hiddenInput.focus(); typeSequence();
         });
     })();
+    $(document).ready(function () {
+            window.onload = function() {
+            let input = $("#inputbox").focus();
+            }
+            $('#hidden-input').ready(function () {
+                $(this).css({
+                    opacity: '1'
+                })
+                $(this).on('keydown', function (event) {
+                    let keys = $('.key');
+                    let unicode = event.keyCode; 
+                    for (let i = 0; i < keys.length; i++) {
+                        if (keys[i].getAttribute('data') == unicode) {
+                            keys[i].setAttribute('style',
+                                'background: #FFF; color: #FfF'
+                                )
+                        } else {
+                            keys[i].setAttribute('style',
+                                'background: #000; transition: all 0.3s')
+                        }
+                        setTimeout(function () {
+                            keys[i].setAttribute('style',
+                                'background: #000000; transition: all 0.3s')
+                        }, 100)
+                       
+                    }
+                });
+            })
+            $('#hidden-input').on('blur', function () {
+                let keys = $('.key');
+                for (let i = 0; i < keys.length; i++) {
+                    keys[i].setAttribute('style', 'background: #04122600; transition: all 0.3s');
+                }
+            })
+        })
     </script>
 </body>
 </html>

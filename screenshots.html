@@ -11,6 +11,38 @@
     width: 1px;
     height: 1px; 
 }
+.blur {
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+.animatable {
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+  .animatable.animate-in {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+@keyframes fadeInZoom {
+    from{
+        opacity: 0;
+        filter: blur(8px);
+    }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+.page-wrapper.out {
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 1s ease, filter 1s ease;
+  pointer-events: none;
+}
 
 ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0);
@@ -129,6 +161,7 @@ padding: 5px;
     </style>
 </head>
 <body>
+    <div class="animatable blur">
     <h1>Screenshots</h1>
     <div class="gallery">
         <div class="screenshot-item">
@@ -174,7 +207,32 @@ padding: 5px;
             </div>
         </div>
     </div>
+    <footer><a href="https://yantra-launcher.vercel.app">go back</a></footer>
+
+</div>
 </body>
-<footer><a href="javascript:window.close();"">go back</a></footer>
-<script></script>
-</html>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const animatable = document.querySelector('.animatable');
+  
+      // Remove blur after 0.5s on load
+      setTimeout(() => {
+        animatable.classList.remove('blur');
+      }, 500);
+  
+      // Handle link click with blur + delay
+      document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", e => {
+          e.preventDefault();
+          const href = link.href;
+  
+          animatable.classList.add('blur');
+  
+          setTimeout(() => {
+            window.location.href = href;
+          }, 1500); // Delay 0.5s after blur is added
+        });
+      });
+    });
+  </script>
+  </html>

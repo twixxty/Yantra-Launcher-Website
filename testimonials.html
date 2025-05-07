@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testimonials</title>
     <style>
+.animatable {
+  opacity: 0;
+  filter: blur(8px);
+  animation: fadeInZoom 1s ease forwards;
+}
+.blur {
+            filter: blur(8px);
+            opacity: 0;
+            transition: filter 0.5s ease, opacity 0.5s ease;
+            pointer-events: none;
+          }
+          
+@keyframes fadeInZoom {
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+    .out {
+      filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+    }
         footer{
             margin-top: 10px;
         }
@@ -138,7 +163,7 @@ padding: 5px;
             transition: margin 4s ease-in-out, padding 4s ease-in-out, color 4s ease-in-out, border 4s ease-in-out, border-color 3s ease-in-out, scale 3s ease-in-out, margin-top 3s ease-in-out, margin-bottom 3s ease-in-out;
 scale: 0.9;
 padding: 0px;
-border-color: #000000;
+border-color: #00000000;
 margin-top: -55px;
 margin-bottom: -55px;
         }
@@ -156,12 +181,12 @@ margin-bottom: -55px;
 }
     </style>
 </head>
-<body>
+<body><div class="animatable">
     <h1>Testimonials</h1>
     <span>Don't take our word for it!</span><br><br>
     <span id="main-stuff">Yantra Launcher is <a href="https://github.com/coderGtm/yantra-app-launcher"><b>fully </b> open source.<a></a></span><br><br>
-    <a href="javascript:void(0);" onclick="darkenAndClose()" id="goback">go back</a>
-<div class="testimonial">
+    <a href="https://yantra-launcher.vercel.app" onclick="darkenAndClose()" id="goback">go back</a>
+    <div class="testimonial">
     <p>"Yantra is very<span id="main-stuff"> lightweight</span>, it is<span id="main-stuff"> customizable</span> and supports scripting with Lua but those things require the pro version, which I'd say is very low cost.  
     The community is overall nice and caring, while the developer is open to every help and feature request."</p>        
     <div class="author">- Axolotl</div>
@@ -187,17 +212,57 @@ margin-bottom: -55px;
     <p>"Yantra Launcher is<span id="main-stuff"> easy to use</span>,<span id="main-stuff"> functional</span>, and<span id="main-stuff"> well-maintained</span>. The lead dev is kind and excited about the project and very helpful with questions and concerns.  
     The app itself is<span id="main-stuff"> easily moddable</span> and<span id="main-stuff"> very responsive</span>."</p>
     <div class="author">- dropoflife</div>    
-</div>    
+</div>   
+</div> 
 <footer>
 
 </footer>
         </body>
         <script>
-              function darkenAndClose() {
-            document.body.classList.add('dark-mode');
+          const animatableDiv = document.querySelector(".animatable");
+    let clickedLink = null;
+
+    // Initial blur effect
+    animatableDiv.classList.add("blur");
+
+    // Apply blur and delay before navigating
+    document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", e => {
+            e.preventDefault(); // Prevent default link behavior
+            clickedLink = link.href; // Store the link to redirect to later
+
+            // Apply blur after 4 seconds
+           
+            // Redirect after 5.5 seconds from the initial click
             setTimeout(() => {
-                window.close();
-            }, 6000);
-        }
-        </script>
+                if (document.hasFocus()) { // Check if the window is focused before redirecting
+                    window.location.href = clickedLink;
+                }
+            }, 5500); // Redirect after 5.5 seconds
+        });
+    });
+
+    // Reset blur if the window regains focus before redirection
+    window.addEventListener("focus", () => {
+        // Clear previous timeouts to prevent them from firing after focus
+        animatableDiv.classList.remove("blur");
+    });
+
+    // Optional: darkenAndClose for go back
+    function darkenAndClose() {
+        document.body.classList.add('dark-mode');
+        setTimeout(() => {
+            // You can add a fade-out or additional effect here
+        }, 6000);
+        setTimeout(() => {
+                animatableDiv.classList.add("blur");
+            }, 4000); // 4 seconds before applying blur
+
+    }
+          </script>
+          
+          
+       
+          
+          
 </html>

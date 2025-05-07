@@ -4,6 +4,27 @@
     <title>Install Yantra Launcher</title>
     </head>
 <style>
+.animatable {
+  opacity: 0;
+  transform: scale(0.95);
+  filter: blur(8px);
+  animation: fadeInZoom 1s ease forwards;
+}
+
+@keyframes fadeInZoom {
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+
+    .out {
+      filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+    }
 footer{
         }
         @font-face {
@@ -131,12 +152,46 @@ padding: 5px;
 }
 
 </style>
-<body><div id="containerlol">
+<body>
+    <main>
+    <div id="containerlol">
+        <div class="animatable">
 <h1>Install</h1>
 <p>Choose one of the options below to install Yantra Launcher</p>
 <a href="https://play.google.com/store/apps/details?id=com.coderGtm.yantra">Yantra Minimal CLI Launcher</a><br><br>
 <a href="https://play.google.com/store/apps/details?id=com.coderGtm.yantra.pro">Yantra CLI Launcher Pro</a><br><br>
 <a href="https://github.com/coderGtm/yantra-app-launcher?tab=readme-ov-file#building">Build it for yourself!</a>
 </div>
+</div>
+</main>
 </body>
+<script>
+  const divs = document.querySelectorAll(".animatable");
+    let clickedLink = null;
+    let delayTimeout = null;
+
+    document.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        clickedLink = link.href;
+
+        divs.forEach(div => div.classList.add("out"));
+
+        delayTimeout = setTimeout(() => {
+          if (document.hasFocus()) {
+            window.location.href = clickedLink;
+          }
+        }, 3000);
+      });
+    });
+
+    window.addEventListener("focus", () => {
+      if (delayTimeout) {
+        clearTimeout(delayTimeout);
+        delayTimeout = null;
+        clickedLink = null;
+        divs.forEach(div => div.classList.remove("out"));
+      }
+    });
+  </script>
 </html>
