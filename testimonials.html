@@ -222,26 +222,21 @@ margin-bottom: -55px;
     let clickedLink = null;
 
     animatableDiv.classList.add("blur");
-
     document.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", e => {
+    link.addEventListener("click", e => {
+        if (link.id === "goback") { // Only apply logic for the "goBack" link
             e.preventDefault(); 
-            clickedLink = link.href; 
-
-
-           
+            clickedLink = link.href;
 
             setTimeout(() => {
-            if (document.hasFocus()) { 
-                animatableDiv.classList.add("blur");
-                setTimeout(() => {
-                    window.location.href = clickedLink; // Additional timeout for redirection
-                }, 1000); // Delay redirection by 2 seconds
-            }
-        }, 5500); // Redirect after 5.5 seconds
-        });
+                if (document.hasFocus()) { 
+                    animatableDiv.classList.add("blur");
+                    window.location.href = clickedLink;
+                }
+            }, 5500); // Redirect after 5.5 seconds
+        }
     });
-
+});
     // Reset blur if the window regains focus before redirection
     window.addEventListener("focus", () => {
         // Clear previous timeouts to prevent them from firing after focus
