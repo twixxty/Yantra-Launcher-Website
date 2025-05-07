@@ -150,7 +150,7 @@ padding: 5px;
 
         .dark-mode #main-stuff {
             transition: all 4s ease-in-out;
-            color: #ffffff; /* Keep main-stuff bright */
+            color: #ffffff;
             font-size: 1.2em;
         }
         .dark-mode p {
@@ -221,23 +221,24 @@ margin-bottom: -55px;
           const animatableDiv = document.querySelector(".animatable");
     let clickedLink = null;
 
-    // Initial blur effect
     animatableDiv.classList.add("blur");
 
-    // Apply blur and delay before navigating
     document.querySelectorAll("a").forEach(link => {
         link.addEventListener("click", e => {
-            e.preventDefault(); // Prevent default link behavior
-            clickedLink = link.href; // Store the link to redirect to later
+            e.preventDefault(); 
+            clickedLink = link.href; 
 
-            // Apply blur after 4 seconds
+
            
-            // Redirect after 5.5 seconds from the initial click
+
             setTimeout(() => {
-                if (document.hasFocus()) { // Check if the window is focused before redirecting
-                    window.location.href = clickedLink;
-                }
-            }, 5500); // Redirect after 5.5 seconds
+            if (document.hasFocus()) { 
+                animatableDiv.classList.add("blur");
+                setTimeout(() => {
+                    window.location.href = clickedLink; // Additional timeout for redirection
+                }, 1000); // Delay redirection by 2 seconds
+            }
+        }, 5500); // Redirect after 5.5 seconds
         });
     });
 
