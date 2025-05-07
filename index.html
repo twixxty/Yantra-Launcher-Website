@@ -97,7 +97,7 @@
             align-items: left;
         }
         .typed-word.command {
-  align-self: center;         /* center just the commands */
+  align-self: center;        
 }
         .keyboard-overlay {
             position: absolute;
@@ -114,13 +114,13 @@
 
 .hidden-input {
     position: absolute;
-    top: 60%;       /* sit immediately below the “type here” line */
-    left: 50%;       /* center it under the preview text */
+    top: 60%;      
+    left: 50%;     
     transform: translateX(-50%);
     width: 80%;
     max-width: 800px;
     opacity: 0;
-    pointer-events: none;  /* still focusable via JS, but won’t catch stray taps */
+    pointer-events: none; 
 }
 
         
@@ -142,7 +142,6 @@
     padding: 2px 4px;
     text-transform: uppercase;
 transition 0.5s all ease;
-    /* restart the blur animation every time */
     animation: twriter 0.5s ease-in-out both;
 }
 
@@ -292,9 +291,8 @@ transition 0.5s all ease;
             for(const w of words){ await typeLine(w); await sleep(200); }
         }
       /**
- * Creates a new line in the terminal.
- * @param {string} text    – initial text for the line (empty to start typing)
- * @param {boolean} isCommand – true if this line is one of your commands
+ * @param {string} text    
+ * @param {boolean} isCommand
  */
 function appendLine(text, isCommand) {
   const div = document.createElement('div');
@@ -331,7 +329,6 @@ async function typeLine(line) {
     const url = commandUrls[typedText];
     const container = document.querySelector('.terminal-container');
 
-// Apply transform styles
 container.style.transition = 'all 1s ease';
 container.style.transformOrigin = 'center center';
 container.style.filter = 'blur(8px)';
@@ -339,9 +336,7 @@ container.style.transform = 'scale(0.95)';
 container.style.opacity = '0';
 
 
-    // Wait 1s for animation, then 2s for navigation
     setTimeout(() => {
-        // Navigation only if still focused
         if (document.hasFocus()) {
             if (typedText === 'screenshots') {
                 screenshotFrame.classList.add('active');
@@ -349,14 +344,12 @@ container.style.opacity = '0';
                 window.location.href = url;
             }
         }
-    }, 1500); // 1s + 2s = 3s total
-
+    }, 1500); 
     typedText = '';
     hiddenInput.value = '';
     highlight();
     updateInput();
 
-    // Restore if tab regains focus
     window.addEventListener('focus', () => {
         container.style.transition = 'all 0.5s ease';
         container.style.filter = '';

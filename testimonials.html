@@ -224,7 +224,7 @@ margin-bottom: -55px;
     animatableDiv.classList.add("blur");
     document.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", e => {
-        if (link.id === "goback") { // Only apply logic for the "goBack" link
+        if (link.id === "goback") { 
             e.preventDefault(); 
             clickedLink = link.href;
 
@@ -233,26 +233,23 @@ margin-bottom: -55px;
                     animatableDiv.classList.add("blur");
                     window.location.href = clickedLink;
                 }
-            }, 5500); // Redirect after 5.5 seconds
+            }, 5500);
         }
     });
 });
-    // Reset blur if the window regains focus before redirection
+   
     window.addEventListener("focus", () => {
-        // Clear previous timeouts to prevent them from firing after focus
+       
         animatableDiv.classList.remove("blur");
     });
 
-    // Optional: darkenAndClose for go back
     function darkenAndClose() {
         document.body.classList.add('dark-mode');
         setTimeout(() => {
-            // You can add a fade-out or additional effect here
         }, 6000);
         setTimeout(() => {
                 animatableDiv.classList.add("blur");
-            }, 4000); // 4 seconds before applying blur
-
+            }, 4000); 
     }
           </script>
           

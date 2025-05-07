@@ -216,12 +216,10 @@ padding: 5px;
     window.addEventListener('DOMContentLoaded', () => {
       const animatable = document.querySelector('.animatable');
   
-      // Remove blur after 0.5s on load
       setTimeout(() => {
         animatable.classList.remove('blur');
       }, 500);
   
-      // Handle link click with blur + delay
       document.querySelectorAll("a").forEach(link => {
         link.addEventListener("click", e => {
           e.preventDefault();
@@ -231,7 +229,7 @@ padding: 5px;
   
           setTimeout(() => {
             window.location.href = href;
-          }, 1500); // Delay 0.5s after blur is added
+          }, 1500);
         });
       });
     });
